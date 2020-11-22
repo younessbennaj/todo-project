@@ -91,18 +91,25 @@ const TaskForm = ({ task }) => {
   //Notre formulaire possède des données qui sont ammené à évoluer en fonction du temps (champs du formulaire)
   //On va donc utiliser un état local pour gérer ça
 
-  function handleSubmit() {
-
-  }
-
   //Pour éviter de répéter la logique de mise à jour du state pour chaque input je vais utiliser un custom hook.
   const { value: title, bind: bindTitle, reset: resetTitle } = useInput(task ? task.title : "");
   const { value: description, bind: bindDescription, reset: resetDescription } = useInput(task ? task.description : "");
   const { value: body, bind: bindBody, reset: resetBody } = useInput(task ? task.body : "");
 
+  //Gestionnaire d'évenement pour la soumission du formulaire 
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log({
+      title,
+      description,
+      body
+    })
+  }
+
+
   return (
     <div>
-      <form action="">
+      <form onSubmit={(e) => handleSubmit(e)} action="">
         <div>
           <label htmlFor="title">Task title</label>
           <input {...bindTitle} type="text" name="title" id="title" />
