@@ -86,21 +86,21 @@ const TaskForm = () => {
 
 
     return (
-        <div>
+        <div className="form-container">
             <form onSubmit={(e) => handleSubmit(e, task)} action="">
                 <div>
                     <label htmlFor="title">Task title</label>
-                    <input {...bindTitle} type="text" name="title" id="title" />
+                    <input className='input' {...bindTitle} type="text" name="title" id="title" />
                 </div>
                 <div>
                     <label htmlFor="description">Task description</label>
-                    <input {...bindDescription} type="text" name="description" id="description" />
+                    <input className='input' {...bindDescription} type="text" name="description" id="description" />
                 </div>
                 <div>
                     <label htmlFor="body">Task body</label>
-                    <input {...bindBody} type="text" name="body" id="body" />
+                    <input className='input' {...bindBody} type="text" name="body" id="body" />
                 </div>
-                <input type="submit" value={task ? "Edit" : "Add"} />
+                <input className="btn" type="submit" value={task ? "Edit" : "Add"} />
             </form>
             <Link to="/">Previous</Link>
         </div>

@@ -20,9 +20,15 @@ const Task = ({ taskId, title }) => {
         dispatch({ type: "DELETE_TASK", payload: { _id: id } })
     }
 
+    function checkTask(e, taskId) {
+
+    }
+
     return (
+        // <li key={task.id}><input defaultChecked={task.isCompleted} type="checkbox" name="task" id="" onChange={(e) => checkTask(e, task.id)} /><label htmlFor="">{task.description}</label></li>
         <li>
-            <div>
+            <div className="task-item">
+                <input type="checkbox" name="task" id="" onChange={(e) => checkTask(e, taskId)} />
                 <p>{title}</p>
                 <button><Link to={`/task/${taskId}`} >details</Link></button>
                 <button><Link to={`/submit/${taskId}`}>edit</Link></button>

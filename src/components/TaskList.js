@@ -11,7 +11,7 @@ import Task from "./Task";
 */
 const TaskList = ({ tasks }) => {
     return (
-        <div>
+        <div className="task-list">
             <ul>
                 {tasks.map(task => {
                     return (
@@ -19,7 +19,7 @@ const TaskList = ({ tasks }) => {
                     )
                 })}
             </ul>
-            <button><Link to={`/submit`}>Create a task</Link></button>
+            <button className="btn"><Link to={`/submit`}>Create a task</Link></button>
         </div>
     )
 }
