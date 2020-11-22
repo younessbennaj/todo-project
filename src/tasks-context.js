@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 
 // notre mock de donnée avec lequel on va intialiser notre état local
 const tasksModelMock = [
@@ -53,9 +53,7 @@ const TasksDispatchContext = React.createContext(); //Renvoi un objet context
 
 */
 
-const TasksProvider = ({ children }) => {
-
-    /* 
+/* 
 
     *** REDUCER ***
 
@@ -73,24 +71,27 @@ const TasksProvider = ({ children }) => {
 
     */
 
-    function reducer(state, action) {
-        //On switch selon le type d'action dispatché
-        // [...state.tasks] => évite la mutation de l'état local
-        switch (action.type) {
-            case "ADD_TASK":
-                //Logique pour ajouter une tâche ici
-                return { tasks: [...state.tasks] };
-                break;
-            case "EDIT_TASK":
-                //Logique pour modifier une tâche ici
-                return { tasks: [...state.tasks] }
-                break;
-            case "DELETE_TASK":
-                //Logique pour supprimer une tâche ici
-                return { tasks: [...state.tasks] }
-                break;
-        }
+function reducer(state, action) {
+    //On switch selon le type d'action dispatché
+    // [...state.tasks] => évite la mutation de l'état local
+    switch (action.type) {
+        case "ADD_TASK":
+            //Logique pour ajouter une tâche ici
+            console.log(action.payload);
+            return { tasks: [...state.tasks, action.payload] };
+        case "EDIT_TASK":
+            //Logique pour modifier une tâche ici
+            console.log(action.payload);
+            return { tasks: [...state.tasks] }
+        case "DELETE_TASK":
+            //Logique pour supprimer une tâche ici
+            return { tasks: [...state.tasks] }
+        default:
+            return { ...state }
     }
+}
+
+const TasksProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, { tasks: tasksModelMock })
 
