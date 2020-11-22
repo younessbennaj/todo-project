@@ -1,6 +1,6 @@
 #Todo App
 
-## Découper l'interface en composants
+# Découper l'interface en composants
 
 Avant de plonger dans le code il est important de faire un travail de plannification en amont pour structurer notre projet et découper notre interface en composant pour un code plus compréhensible, maintenable et scalable. 
 
@@ -120,7 +120,7 @@ On va donc créer un composant dont le rôle va être de collecter les informati
 + TaskDetails (rouge): Collecte les attributs d'une tâche. 
 
 
-## Conception de la version statique 
+# Conception de la version statique 
 
 ### Definition des props
 
@@ -247,7 +247,9 @@ Avant tout dans notre composant parent App on va définir le mock de notre modè
 
 ```
 
-## Rendre l'interface interactive et mettre en place le state management
+
+
+# Rendre l'interface interactive et mettre en place le state management
 
 (Disclamer: Dans un projet réaliste d'application utilsant une API pour gérer les tâches, je n'aurais pas fait ce choix technique. J'aurais privilégié un state management local plus simple. En effet j'aurais privilégié le fait d'utiliser les routes de l'API, par exemple une requête POST pour créer une nouvelle tâche puis de retour sur la page principale j'aurais fetché de nouveau ma liste de tâche. Pareil pour la page des détails d'une tâche, j'aurais utilisé une requête GET sur la route /tasks/:taskId, etc... Pour plus de détail voir le document ***"Fake API doc"***.)
 
@@ -350,6 +352,8 @@ function useInput(initialValue)  {
   };
 };
 ```
+
+
 
 
 
