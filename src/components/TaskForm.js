@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import moment from "moment";
 
+//REACT ROUTER 
+import {
+    Link,
+    useParams,
+    useHistory
+} from "react-router-dom";
+
 //Utils
 
 //Fonction pour générer un ID
 import { ID } from "../utils/id";
 
 //State management 
-import { useTasksDispatch } from "../tasks-context";
+import { useTasksState, useTasksDispatch } from "../tasks-context";
 
 /*
 
@@ -20,7 +27,16 @@ import { useTasksDispatch } from "../tasks-context";
 
 */
 
-const TaskForm = ({ task }) => {
+const TaskForm = () => {
+    //Pour rediriger l'utilisateur
+    let history = useHistory();
+
+    //Je récupère de l'Id dans la route
+    let { taskId } = useParams();
+    //Je récupère la tâche qui correspond à cet ID
+    const task = useTasksState().find(task => {
+        return task._id === taskId;
+    });
     //Permet de récupérer la fonction de dispatch pour dispatcher une action à notre reducteur
     const dispatch = useTasksDispatch();
 
@@ -56,6 +72,16 @@ const TaskForm = ({ task }) => {
         };
 
         dispatch({ type: actionType, payload: newTask });
+
+        if (actionType === "ADD_TASK") {
+            //Si on est en mode ajout de tâche, on clear le form.
+            resetTitle();
+            resetDescription();
+            resetBody();
+        } else {
+            //Si on est en mode édition, on renvoi l'user vers la home page
+            history.push("/")
+        }
     }
 
 
@@ -76,6 +102,7 @@ const TaskForm = ({ task }) => {
                 </div>
                 <input type="submit" value={task ? "Edit" : "Add"} />
             </form>
+            <Link to="/">Previous</Link>
         </div>
     )
 

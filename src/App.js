@@ -2,9 +2,19 @@ import React from 'react';
 import './App.css';
 import { useTasksState, useTasksDispatch } from "./tasks-context";
 
+//REACT ROUTER 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams
+} from "react-router-dom";
+
 //Import components here
 import TaskForm from "./components/TaskForm";
-
+import TaskDetails from "./components/TaskDetails";
+import TaskList from "./components/TaskList";
 /*  
 
   Pour mieux organiser mon code j'ai égalment décider d'ajouter un composant Layout qui a pour but de définir la 
@@ -26,70 +36,6 @@ const Layout = ({ children }) => {
 
 /*
 
-  Ce composant affiche le titre d'une tâche et les bouttons permettant de rediriger l'utilisateur vers la page de détails ou de modification de la tâche.
-
-  Le composant Task doit aussi posséder l'Id de la tâche car les pages de détails ou de modification en auront besoin.
-
-*/
-
-const Task = ({ taskId, title }) => {
-
-  const dispatch = useTasksDispatch();
-
-  function handleDelete(id) {
-    dispatch({ type: "DELETE_TASK", payload: { _id: id } })
-  }
-
-  return (
-    <li>
-      <div>
-        <p>{title}</p>
-        <button>details</button>
-        <button>edit</button>
-        <button onClick={() => handleDelete(taskId)}>delete</button>
-      </div>
-    </li>
-  )
-}
-
-/*
-
-  Ce composant afficher une collection de tâche. 
-
-*/
-const TaskList = ({ tasks }) => {
-  return (
-    <ul>
-      {tasks.map(task => {
-        return (
-          <Task key={task._id} taskId={task._id} title={task.title} />
-        )
-      })}
-    </ul>
-  )
-}
-
-/*
-
-  Affiche les attributs d'une tâche. 
-
-*/
-const TaskDetails = ({ task }) => {
-  return (
-    <div>
-      <p>{task.title}</p>
-      <p>{task.details}</p>
-      <p>{task.body}</p>
-      <p>{task.createdAt}</p>
-      <p>{task.modfiedAt}</p>
-      <p>{task.archivedAt}</p>
-    </div>
-  )
-}
-
-
-/*
-
   On va laisser à un composant parent de la hiérarchie le rôle de posséder et maintenir un état des données de
   l'application, ainsi que de faire descendre ce flux de données vers les composants enfants via leur props.
   Dans notre cas ce composant sera simplement le composant racine "App". 
@@ -97,16 +43,27 @@ const TaskDetails = ({ task }) => {
 */
 
 function App() {
-
   //Permet de récupérer l'état local qui représente la collection de tâche
   const tasks = useTasksState();
 
   return (
     <Layout>
-      <TaskList tasks={tasks} />
-      <TaskDetails task={tasks[0]} />
-      <TaskForm task={tasks[0]} />
-      <TaskForm />
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <TaskList tasks={tasks} />
+          </Route>
+          <Route path="/task/:taskId" exact>
+            <TaskDetails />
+          </Route>
+          <Route path="/submit/:taskId" exact>
+            <TaskForm />
+          </Route>
+          <Route path="/submit" exact>
+            <TaskForm />
+          </Route>
+        </Switch>
+      </Router>
     </Layout>
   );
 }
