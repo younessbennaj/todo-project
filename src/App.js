@@ -10,20 +10,67 @@ const Layout = ({ children }) => {
   )
 }
 
+const Task = ({ taskId, title }) => {
+  return (
+    <li>
+      <div>
+        <p>{title}</p>
+        <button>details</button>
+        <button>edit</button>
+      </div>
+    </li>
+  )
+}
+
 const TaskList = ({ tasks }) => {
   return (
     <ul>
-      <li>
-        <p>Task Title</p>
-      </li>
-      <li>
-        <p>Task Title</p>
-      </li>
-      <li>
-        <p>Task Title</p>
-      </li>
+      {tasks.map(task => {
+        return (
+          <Task key={task._id} taskId={task._id} title={task.title} />
+        )
+      })}
     </ul>
   )
+}
+
+const TaskDetails = ({ task }) => {
+  return (
+    <div>
+      <p>{task.title}</p>
+      <p>{task.details}</p>
+      <p>{task.body}</p>
+      <p>{task.createdAt}</p>
+      <p>{task.modfiedAt}</p>
+      <p>{task.archivedAt}</p>
+    </div>
+  )
+}
+
+const TaskForm = ({ task }) => {
+  function handleChange() {
+
+  }
+  return (
+    <div>
+      <form action="">
+        <div>
+          <label htmlFor="title">Task title</label>
+          <input onChange={handleChange} value={task ? task.title : ""} type="text" name="title" id="title" />
+        </div>
+        <div>
+          <label htmlFor="description">Task description</label>
+          <input onChange={handleChange} value={task ? task.description : ""} type="text" name="description" id="description" />
+        </div>
+        <div>
+          <label htmlFor="body">Task body</label>
+          <input onChange={handleChange} value={task ? task.body : ""} type="text" name="body" id="body" />
+        </div>
+        <input type="submit" value={task ? "Edit" : "Add"} />
+      </form>
+    </div>
+  )
+
 }
 
 function App() {
@@ -50,7 +97,10 @@ function App() {
 
   return (
     <Layout>
-      <TaskList />
+      <TaskList tasks={tasksModelMock} />
+      <TaskDetails task={tasksModelMock[0]} />
+      <TaskForm task={tasksModelMock[0]} />
+      <TaskForm />
     </Layout>
   );
 }
