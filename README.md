@@ -247,6 +247,40 @@ Avant tout dans notre composant parent App on va définir le mock de notre modè
 
 ```
 
+## Rendre l'interface interactive et mettre en place le state management
+
+(Disclamer: Dans un projet réaliste d'application utilsant une API pour gérer les tâches, je n'aurais pas fait ce choix technique. J'aurais privilégié un state management local plus simple. En effet j'aurais privilégié le fait d'utiliser les routes de l'API, par exemple une requête POST pour créer une nouvelle tâche puis de retour sur la page principale j'aurais fetché de nouveau ma liste de tâche. Pareil pour la page des détails d'une tâche, j'aurais utilisé une requête GET sur la route /tasks/:taskId, etc... Pour plus de détail voir le document ***"Fake API doc"***.)
+
+Pour déterminer l'état local modifiable de chaque composant il faut se demander si la donnée utilisé dans l'application est passé via les props ou non, et également si cette donnée va être améné à évoluer en fonction du temps. 
+
+Selon cette description il y'a donc deux données qui vont être géré par de l'état local: 
+
+- La collection de tâche 
+- Les données collectée par le formulaire d'ajout et de modification de tâche
+
+
+### Mon choix technique pour le state management 
+
+### 1) Pour la collection de tâches: 
+
+Sans serveur et base de donnée, la logique de gestion des tâches va devoir se faire intégralement coté Front. Il est donc nécessaire de mettre en place un state management global qui nous permet de gérer l'état local modifiable de l'application. Pour se faire je vais utiliser deux compsantes de React: l'API React Context et l'API des Hooks avec useReducer.
+
+#### API Contexte
+
+Un context React va nous permettre de faire passer une donnée au travers de la l'arbre de composant sans avoir à faire du props drilling à chaque niveau de la hiérarchie.
+
+#### useReducer
+
+useReducer est un hook React qui nous permet de la gestion d'état local plus complexe qu'avec un simple useState. On utilise pour cela un reducteur qui nous permet de mofier l'état en fonction de plusieur type d'action qui peuvent être dispatchés (fonctionnement similaire à Redux). 
+
+### 2) Pour les données collectée par le formulaire
+
+Pour cet état local je vais simplement utiliser le hook useState qui permet d'intialiser un état local et de le mettre à jour.
+
+
+
+
+
 
 
 
