@@ -78,9 +78,10 @@ function reducer(state, action) {
         case "ADD_TASK":
             //Logique pour ajouter une tâche ici
             console.log(action.payload);
-            return { tasks: [...state.tasks] };
+            return { tasks: [...state.tasks, action.payload] };
         case "EDIT_TASK":
             //Logique pour modifier une tâche ici
+            console.log(action.payload);
             return { tasks: [...state.tasks] }
         case "DELETE_TASK":
             //Logique pour supprimer une tâche ici

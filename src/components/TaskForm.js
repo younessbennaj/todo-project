@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import moment from "moment";
+
+//Utils
+
+//Fonction pour générer un ID
+import { ID } from "../utils/id";
 
 //State management 
 import { useTasksDispatch } from "../tasks-context";
@@ -30,16 +36,17 @@ const TaskForm = ({ task }) => {
 
     //Gestionnaire d'évenement pour la soumission du formulaire 
     const handleSubmit = (e) => {
-        console.log(actionType);
-        // const actionType = task ? 'EDIT_TASK' : 'ADD_TASK';
-        // console.log(actionType);
         e.preventDefault();
         const task = {
+            _id: ID(),
             title,
             description,
-            body
+            body,
+            createdAt: moment().toISOString(),
+            modfiedAt: null,
+            archivedAt: null
         };
-        dispatch({ type: "ADD_TASK", payload: task });
+        dispatch({ type: actionType, payload: task });
     }
 
 
