@@ -1,6 +1,6 @@
 #Todo App
 
-## Découper l'interface en composants
+# Découper l'interface en composants
 
 Avant de plonger dans le code il est important de faire un travail de plannification en amont pour structurer notre projet et découper notre interface en composant pour un code plus compréhensible, maintenable et scalable. 
 
@@ -120,7 +120,7 @@ On va donc créer un composant dont le rôle va être de collecter les informati
 + TaskDetails (rouge): Collecte les attributs d'une tâche. 
 
 
-## Conception de la version statique 
+# Conception de la version statique 
 
 ### Definition des props
 
@@ -247,7 +247,9 @@ Avant tout dans notre composant parent App on va définir le mock de notre modè
 
 ```
 
-## Rendre l'interface interactive et mettre en place le state management
+
+
+# Rendre l'interface interactive et mettre en place le state management
 
 (Disclamer: Dans un projet réaliste d'application utilsant une API pour gérer les tâches, je n'aurais pas fait ce choix technique. J'aurais privilégié un state management local plus simple. En effet j'aurais privilégié le fait d'utiliser les routes de l'API, par exemple une requête POST pour créer une nouvelle tâche puis de retour sur la page principale j'aurais fetché de nouveau ma liste de tâche. Pareil pour la page des détails d'une tâche, j'aurais utilisé une requête GET sur la route /tasks/:taskId, etc... Pour plus de détail voir le document ***"Fake API doc"***.)
 
@@ -265,17 +267,93 @@ Selon cette description il y'a donc deux données qui vont être géré par de l
 
 Sans serveur et base de donnée, la logique de gestion des tâches va devoir se faire intégralement coté Front. Il est donc nécessaire de mettre en place un state management global qui nous permet de gérer l'état local modifiable de l'application. Pour se faire je vais utiliser deux compsantes de React: l'API React Context et l'API des Hooks avec useReducer.
 
-#### API Contexte
-
-Un context React va nous permettre de faire passer une donnée au travers de la l'arbre de composant sans avoir à faire du props drilling à chaque niveau de la hiérarchie.
 
 #### useReducer
 
-useReducer est un hook React qui nous permet de la gestion d'état local plus complexe qu'avec un simple useState. On utilise pour cela un reducteur qui nous permet de mofier l'état en fonction de plusieur type d'action qui peuvent être dispatchés (fonctionnement similaire à Redux). 
+useReducer est un hook React qui nous permet de faire de la gestion de state plus complexe. C'est le cas pour la gestion des tâches. En effet, on va devoir mettre à jour ce state soit en ajouter, en modifiant ou en supprimant une tâche. Il est donc plus intéressant d'avoir cette logique dans une fonction reducteur qui se fait en fonction que tel ou tel type d'action soit dispatché. 
+
+```
+function reducer(state, action) {
+    //On switch selon le type d'action dispatché
+    switch (action.type) {
+        case "ADD_TASK":
+            //Logique pour ajouter une tâche ici
+            return { tasks: [...state.tasks] };
+            break;
+        case "EDIT_TASK":
+            //Logique pour modifier une tâche ici
+            return { tasks: [...state.tasks] }
+            break;
+        case "DELETE_TASK":
+            //Logique pour supprimer une tâche ici
+            return { tasks: [...state.tasks] }
+            break;
+    }
+}
+```
+
+#### API Contexte
+
+Un context React va nous permettre de faire passer une donnée au travers de la l'arbre de composant sans avoir à faire du props drilling à chaque niveau de la hiérarchie. Dans notre cas on va faire passer l'état local qui possède la collection de tâche mais également notre fonction dispatch pour distacher des actions à notre réducteur. 
+
+```
+const TasksStateContext = React.createContext(); 
+
+const TasksDispatchContext = React.createContext(); 
+```
+
++ TasksStateContext: Ce premier contexte va nous permettre de faire passer notre modèle de donnée représentant la collection de tâches au travers de l'arbre de composant pour qu'il soit accéssible au composant
+
++ TasksDispatchContext: Ce second contexte va nous permettre de passer la fonction de dispatch à tous nos composants
+
+```createContext()``` renvoi un objet contexte qui tient une propriété "Provider". Ce Provider est en fait un composant react avec lequel on va pouvoir venir emrober notre hiérarchie de composant. On peut passer un attribut "value" à ce composant et donner à cet attribut une valeur avec laquelle intialiser le contexte pour la portion de l'arbre de composant enrobé par ce provider 
+
+```
+<Provider value={defaultValue}>
+	//Children 
+</Provider>
+```
+
+### Résulat
+
+On peut donc maintenant venir enrober notre application avec nos Providers et faire passer nos contexts au travers de la hierarchie de composant. 
+
+```
+<TasksProvider>
+  <App />
+</TasksProvider>
+```
+
+On peut ensuite utiliser les données grâce à notre custom hook qui utilise useContext en interne
+
+```
+//Permet de récupérer l'état local qui représente la collection de tâche
+const tasks = useTasksState(); // => tasks[]
+```
 
 ### 2) Pour les données collectée par le formulaire
 
-Pour cet état local je vais simplement utiliser le hook useState qui permet d'intialiser un état local et de le mettre à jour.
+Pour cet état local je vais simplement utiliser le hook useState qui permet d'intialiser un état local et de le mettre à jour. Pour éviter de répéter la logique de mise à jour du state pour chaque input je vais utiliser un custom hook: 
+
+```
+function useInput(initialValue)  {
+  const [value, setValue] = useState(initialValue);
+
+  return {
+    value,
+    setValue,
+    reset: () => setValue(""),
+    bind: {
+      value,
+      onChange: event => {
+        setValue(event.target.value);
+      }
+    }
+  };
+};
+```
+
+
 
 
 
