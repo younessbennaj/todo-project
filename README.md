@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+#Todo App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Découper l'interface en composants
 
-## Available Scripts
+Avant de plonger dans le code il est important de faire un travail de plannification en amont pour structurer notre projet et découper notre interface en composant pour un code plus compréhensible, maintenable et scalable. 
 
-In the project directory, you can run:
+Le rôle de l’interface utilisateur est de représenter graphiquement, de manière esthétique et fonctionnelle, le modèle de donnée envoyé par le serveur qui doit être affiché à l’utilisateur. SI ce modèle à bien été conçu en amont, l’interface utilisateur est donc très souvent le reflet de ce modèle. Chaque composant de notre UI doit faire qu’une seule et unique chose et correspondre à élément de notre modèle.
 
-### `yarn start`
+En fonction du cahier des charges qui m'a été fourni j'ai défini le modèle donnée avec lequel je vais travailler coté front. C'est un mock qui représente un modèle de donnée JSON qu'un serveur pourrait envoyé au client. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Page 1: Afficher la liste des tâches
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+La première page est accessible lorsqu’on lance l’application : elle affiche une liste de todo. Sur chaque ligne de cette liste apparaît le titre du todo au bout : un bouton pour modifier le todo et un bouton pour voir le détail du todo. En dessous de cette liste il faut un bouton Créer un todo. Voici Le modèle de donnée pour cette page: 
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+{
+	tasks: [
+	{
+  		"_id": "5cf0029caff5056591b0ce7d",
+  		"title": "Ma première tâche",
+  		"description": "Créer une application type todo list",
+  		"body" : "L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement."
+  		"createdAt": "2020-11-20T12:40:45Z",
+  		"modfiedAt": "2020-11-20T18:33:48Z",
+  		"archivedAt": "2020-11-22T12:10:48"
+	}
+	{
+  		"_id": "9cf0029caff5024531b0ce7d",
+  		"title": "Une seconde tâche",
+  		"description": "Mettre en ligne l'application",
+  		"body" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo urna, placerat ac fermentum malesuada, eleifend sit amet sapien. Proin condimentum dolor non urna iaculis finibus."
+  		"createdAt": "2020-11-22T08:13:45Z",
+  		"modfiedAt": "2020-11-22T10:30:48Z",
+  		"archivedAt": "2020-11-23T12:00:00"
+	}
+]
+}
+```
 
-### `yarn build`
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| tasks | Array | A list of Tasks |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+En fonction du modèle de donnée et du cahier des charges j'ai décidé de découper mon interface principale en deux composant: 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
++ TasksList (bleu): Affiche la collection de tâches 
++ Task (rouge): Affiche le titre d'une tâche, le bouton qui redirige vers la page qui affiche les détails d'une tâche et celui qui redirige l'utilisateur vers la page d'édition de la tâche.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Le cahier des charges stipule également que l'on retrouver en bas de la page un boutton qui redirige vers la page de création d'une tâche. Il n'est pas nécessaire de créer un composant pour ce dernier car il ne tient pas de logique et n'est pas réutiliser dans l'application. 
 
-### `yarn eject`
+![page1](./assets/tasks-list.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Ma hiérarchie de composant ressemble donc à: 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+- TasksList
+	- Task
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+###Page 2: Afficher les détails d'une tâche
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+La deuxième page est accessible en cliquant sur le détail d’une todo : elle affiche tous les attributs d’un todo récupéré. Le modèle de donnée pour cette page est le suivant: 
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+{
+  "_id": "5cf0029caff5056591b0ce7d",
+  "title": "My first ever task",
+  "description": "Créer une application type todo list",
+  "body" : "L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement."
+  "createdAt": "2020-11-20T12:40:45Z",
+  "modfiedAt": "2020-11-20T18:33:48Z",
+  "archivedAt": "2020-11-22T12:10:48"
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| _id | String | The Task ID |
+| title | String | The Task Title |
+| description | String | Short description of the Task |
+| body | String | Riche details about the Task |
+| createdAt | String | Creation date of the Task in ISO 8601 format |
+| modfiedAt | String | Modification date of the Task in ISO 8601 format |
+| archivedAt | String | Achievement date of the Task in ISO 8601 format |
 
-### Code Splitting
+![page2](./assets/task-details.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+On va donc créer un composant dont le rôle va être de représenter graphiquement à l'utilisateur des détails relatifs à la tâche. 
 
-### Analyzing the Bundle Size
++ TaskDetails (rouge): Affiche les attributs d'une tâche. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+###Page 3: Modification / Création d'une tâche 
 
-### Making a Progressive Web App
+La troisième page accessible soit en cliquant sur Créer un todo sur la première page soit en cliquant sur modifier un todo, permet de modifier ou créer un todo supplémentaire.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+L'idée ici est d'avoir un composant qui permet à l'utilisateur de créer un modèle de donnée représentant une tâche ou modifier un modèle existant, puis d'envoyer ce nouveau modèle au serveur (ou le faire persisté directement dans le state de l'application coté front).
 
-### Advanced Configuration
+On va donc utiliser un formulaire qui va collecter via ces inputs les différentes informations dont on a besoin pour créer ou modifier une tâche.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+{
+  "title": "My first ever task",
+  "description": "Créer une application type todo list",
+  "body" : "L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement."
+}
+``` 
 
-### Deployment
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| title | String | The Task Title |
+| description | String | Short description of the Task |
+| body | String | Riche details about the Task |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+![page3](./assets/task-form.png)
 
-### `yarn build` fails to minify
+On va donc créer un composant dont le rôle va être de collecter les informations nécessaire pour construire le modèle de donnée JSON représentant la nouvelle tâche/tâche modifiée. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
++ TaskDetails (rouge): Collecte les attributs d'une tâche. 
+
+
+## Conception de la version statique 
+
+
+
+
+
