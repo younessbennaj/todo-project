@@ -247,8 +247,6 @@ Avant tout dans notre composant parent App on va définir le mock de notre modè
 
 ```
 
-
-
 # Rendre l'interface interactive et mettre en place le state management
 
 (Disclamer: Dans un projet réaliste d'application utilsant une API pour gérer les tâches, je n'aurais pas fait ce choix technique. J'aurais privilégié un state management local plus simple. En effet j'aurais privilégié le fait d'utiliser les routes de l'API, par exemple une requête POST pour créer une nouvelle tâche puis de retour sur la page principale j'aurais fetché de nouveau ma liste de tâche. Pareil pour la page des détails d'une tâche, j'aurais utilisé une requête GET sur la route /tasks/:taskId, etc... Pour plus de détail voir le document ***"Fake API doc"***.)
@@ -352,6 +350,8 @@ function useInput(initialValue)  {
   };
 };
 ```
+
+J'utilise égalemnt un état local qui détermine si le formulaire est en mode ajout ou edit.
 
 
 
