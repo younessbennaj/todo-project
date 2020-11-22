@@ -7,7 +7,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useParams
 } from "react-router-dom";
 
 //Import components here
@@ -52,8 +53,8 @@ const Task = ({ taskId, title }) => {
     <li>
       <div>
         <p>{title}</p>
-        <button>details</button>
-        <button>edit</button>
+        <button><Link to={`/task/${taskId}`} >details</Link></button>
+        <button><Link to={`/submit/${taskId}`}>edit</Link></button>
         <button onClick={() => handleDelete(taskId)}>delete</button>
       </div>
     </li>
@@ -67,13 +68,16 @@ const Task = ({ taskId, title }) => {
 */
 const TaskList = ({ tasks }) => {
   return (
-    <ul>
-      {tasks.map(task => {
-        return (
-          <Task key={task._id} taskId={task._id} title={task.title} />
-        )
-      })}
-    </ul>
+    <div>
+      <ul>
+        {tasks.map(task => {
+          return (
+            <Task key={task._id} taskId={task._id} title={task.title} />
+          )
+        })}
+      </ul>
+      <button><Link to={`/submit`}>Create a task</Link></button>
+    </div>
   )
 }
 
@@ -82,7 +86,14 @@ const TaskList = ({ tasks }) => {
   Affiche les attributs d'une tâche. 
 
 */
-const TaskDetails = ({ task }) => {
+const TaskDetails = () => {
+  //Je récupère de l'Id dans la route
+  let { taskId } = useParams();
+  //Je récupère la tâche qui correspond à cet ID
+  const task = useTasksState().find(task => {
+    return task._id === taskId;
+  });
+
   return (
     <div>
       <p>{task.title}</p>
@@ -91,6 +102,7 @@ const TaskDetails = ({ task }) => {
       <p>{task.createdAt}</p>
       <p>{task.modfiedAt}</p>
       <p>{task.archivedAt}</p>
+      <Link to="/">Previous</Link>
     </div>
   )
 }
@@ -116,12 +128,16 @@ function App() {
           <Route path="/" exact>
             <TaskList tasks={tasks} />
           </Route>
-          <Route path="/task" exact>
-            <TaskDetails task={tasks[0]} />
+          <Route path="/task/:taskId" exact>
+            <TaskDetails />
+          </Route>
+          <Route path="/submit/:taskId" exact>
+            <TaskForm />
           </Route>
           <Route path="/submit" exact>
-            <TaskForm task={tasks[0]} />
+            <TaskForm />
           </Route>
+
           {/* <Route path="/" exact>
         <TaskForm />
         </Route> */}
