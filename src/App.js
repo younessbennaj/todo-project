@@ -1,4 +1,5 @@
 import './App.css';
+import { useTasksState, useTasksDispatch } from "./tasks-context";
 
 /*  
 
@@ -90,6 +91,7 @@ const TaskForm = ({ task }) => {
 
   }
   return (
+
     <div>
       <form action="">
         <div>
@@ -121,33 +123,14 @@ const TaskForm = ({ task }) => {
 
 function App() {
 
-  //Avant tout dans notre composant parent App on va définir le mock de notre modèle de donnée qui va être utilisé dans l'application. 
-  const tasksModelMock = [
-    {
-      "_id": "5cf0029caff5056591b0ce7d",
-      "title": "Ma première tâche",
-      "description": "Créer une application type todo list",
-      "body": "L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement.",
-      "createdAt": "2020-11-20T12:40:45Z",
-      "modfiedAt": "2020-11-20T18:33:48Z",
-      "archivedAt": "2020-11-22T12:10:48"
-    },
-    {
-      "_id": "9cf0029caff5024531b0ce7d",
-      "title": "Une seconde tâche",
-      "description": "Mettre en ligne l'application",
-      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo urna, placerat ac fermentum malesuada, eleifend sit amet sapien. Proin condimentum dolor non urna iaculis finibus.",
-      "createdAt": "2020-11-22T08:13:45Z",
-      "modfiedAt": "2020-11-22T10:30:48Z",
-      "archivedAt": "2020-11-23T12:00:00"
-    }
-  ];
+  //Permet de récupérer l'état local qui représente la collection de tâche
+  const tasks = useTasksState();
 
   return (
     <Layout>
-      <TaskList tasks={tasksModelMock} />
-      <TaskDetails task={tasksModelMock[0]} />
-      <TaskForm task={tasksModelMock[0]} />
+      <TaskList tasks={tasks} />
+      <TaskDetails task={tasks[0]} />
+      <TaskForm task={tasks[0]} />
       <TaskForm />
     </Layout>
   );

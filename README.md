@@ -265,13 +265,55 @@ Selon cette description il y'a donc deux données qui vont être géré par de l
 
 Sans serveur et base de donnée, la logique de gestion des tâches va devoir se faire intégralement coté Front. Il est donc nécessaire de mettre en place un state management global qui nous permet de gérer l'état local modifiable de l'application. Pour se faire je vais utiliser deux compsantes de React: l'API React Context et l'API des Hooks avec useReducer.
 
-#### API Contexte
-
-Un context React va nous permettre de faire passer une donnée au travers de la l'arbre de composant sans avoir à faire du props drilling à chaque niveau de la hiérarchie.
 
 #### useReducer
 
-useReducer est un hook React qui nous permet de la gestion d'état local plus complexe qu'avec un simple useState. On utilise pour cela un reducteur qui nous permet de mofier l'état en fonction de plusieur type d'action qui peuvent être dispatchés (fonctionnement similaire à Redux). 
+useReducer est un hook React qui nous permet de faire de la gestion de state plus complexe. C'est le cas pour la gestion des tâches. En effet, on va devoir mettre à jour ce state soit en ajouter, en modifiant ou en supprimant une tâche. Il est donc plus intéressant d'avoir cette logique dans une fonction reducteur qui se fait en fonction que tel ou tel type d'action soit dispatché. 
+
+```
+function reducer(state, action) {
+    //On switch selon le type d'action dispatché
+    switch (action.type) {
+        case "ADD_TASK":
+            //Logique pour ajouter une tâche ici
+            return { tasks: [...state.tasks] };
+            break;
+        case "EDIT_TASK":
+            //Logique pour modifier une tâche ici
+            return { tasks: [...state.tasks] }
+            break;
+        case "DELETE_TASK":
+            //Logique pour supprimer une tâche ici
+            return { tasks: [...state.tasks] }
+            break;
+    }
+}
+```
+
+#### API Contexte
+
+Un context React va nous permettre de faire passer une donnée au travers de la l'arbre de composant sans avoir à faire du props drilling à chaque niveau de la hiérarchie. Dans notre cas on va faire passer l'état local qui possède la collection de tâche mais également notre fonction dispatch pour distacher des actions à notre réducteur. 
+
+```
+const TasksStateContext = React.createContext(); 
+
+const TasksDispatchContext = React.createContext(); 
+```
+
++ TasksStateContext: Ce premier contexte va nous permettre de faire passer notre modèle de donnée représentant la collection de tâches au travers de l'arbre de composant pour qu'il soit accéssible au composant
+
++ TasksDispatchContext: Ce second contexte va nous permettre de passer la fonction de dispatch à tous nos composants
+
+```createContext()``` renvoi un objet contexte qui tient une propriété "Provider". Ce Provider est en fait un composant react avec lequel on va pouvoir venir emrober notre hiérarchie de composant. On peut passer un attribut "value" à ce composant et donner à cet attribut une valeur avec laquelle intialiser le contexte pour la portion de l'arbre de composant enrobé par ce provider 
+
+```
+<Provider value={defaultValue}>
+	//Children 
+</Provider>
+```
+
+
+
 
 ### 2) Pour les données collectée par le formulaire
 
