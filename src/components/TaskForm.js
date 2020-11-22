@@ -25,7 +25,7 @@ const TaskForm = ({ task }) => {
     const dispatch = useTasksDispatch();
 
     //J'utilise un état local pour déterminer si mon formulaire est en mode edit ou ajout d'un tâche
-    const [actionType, setActionType] = useState(task ? "EDIT_TASK" : "ADD_TASK");
+    // const [actionType, setActionType] = useState(task ? "EDIT_TASK" : "ADD_TASK");
 
     //Notre formulaire possède des données qui sont ammené à évoluer en fonction du temps (champs du formulaire)
     //On va donc utiliser un état local pour gérer ça
@@ -35,24 +35,33 @@ const TaskForm = ({ task }) => {
     const { value: body, bind: bindBody, reset: resetBody } = useInput(task ? task.body : "");
 
     //Gestionnaire d'évenement pour la soumission du formulaire 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, task) => {
         e.preventDefault();
-        const task = {
-            _id: ID(),
+
+        const actionType = task ? "EDIT_TASK" : "ADD_TASK";
+
+        const editMode = task ? true : false;
+
+        const newTask = {
+            //Si on modifie, on garde le même ID
+            _id: editMode ? task._id : ID(),
             title,
             description,
             body,
-            createdAt: moment().toISOString(),
-            modfiedAt: null,
+            //Si on modifie, on garde la même date de création
+            createdAt: editMode ? task._id : moment().toISOString(),
+            //Si on modifie, on ajoute une date de modification
+            modfiedAt: editMode ? moment().toISOString() : null,
             archivedAt: null
         };
-        dispatch({ type: actionType, payload: task });
+
+        dispatch({ type: actionType, payload: newTask });
     }
 
 
     return (
         <div>
-            <form onSubmit={(e) => handleSubmit(e)} action="">
+            <form onSubmit={(e) => handleSubmit(e, task)} action="">
                 <div>
                     <label htmlFor="title">Task title</label>
                     <input {...bindTitle} type="text" name="title" id="title" />

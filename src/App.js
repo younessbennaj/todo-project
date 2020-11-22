@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { useTasksState } from "./tasks-context";
+import { useTasksState, useTasksDispatch } from "./tasks-context";
 
 //Import components here
 import TaskForm from "./components/TaskForm";
@@ -33,12 +33,20 @@ const Layout = ({ children }) => {
 */
 
 const Task = ({ taskId, title }) => {
+
+  const dispatch = useTasksDispatch();
+
+  function handleDelete(id) {
+    dispatch({ type: "DELETE_TASK", payload: { _id: id } })
+  }
+
   return (
     <li>
       <div>
         <p>{title}</p>
         <button>details</button>
         <button>edit</button>
+        <button onClick={() => handleDelete(taskId)}>delete</button>
       </div>
     </li>
   )

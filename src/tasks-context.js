@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import moment from "moment";
 
 // notre mock de donnée avec lequel on va intialiser notre état local
 const tasksModelMock = [
@@ -9,7 +10,7 @@ const tasksModelMock = [
         "body": "L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement.",
         "createdAt": "2020-11-20T12:40:45Z",
         "modfiedAt": "2020-11-20T18:33:48Z",
-        "archivedAt": "2020-11-22T12:10:48"
+        "archivedAt": null
     },
     {
         "_id": "9cf0029caff5024531b0ce7d",
@@ -18,7 +19,7 @@ const tasksModelMock = [
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo urna, placerat ac fermentum malesuada, eleifend sit amet sapien. Proin condimentum dolor non urna iaculis finibus.",
         "createdAt": "2020-11-22T08:13:45Z",
         "modfiedAt": "2020-11-22T10:30:48Z",
-        "archivedAt": "2020-11-23T12:00:00"
+        "archivedAt": null
     }
 ];
 
@@ -37,7 +38,6 @@ const tasksModelMock = [
 const TasksStateContext = React.createContext(); //Renvoi un objet context
 
 const TasksDispatchContext = React.createContext(); //Renvoi un objet context
-
 
 /* 
 
@@ -71,9 +71,16 @@ const TasksDispatchContext = React.createContext(); //Renvoi un objet context
 
     */
 
+//Fonction pour retrouver une tâche dans la collection 
+function findTask(tasks, id) {
+    return tasks.find(task => task.id === id);
+}
+
 function reducer(state, action) {
     //On switch selon le type d'action dispatché
     // [...state.tasks] => évite la mutation de l'état local
+    let newTasks;
+
     switch (action.type) {
         case "ADD_TASK":
             //Logique pour ajouter une tâche ici
@@ -81,11 +88,31 @@ function reducer(state, action) {
             return { tasks: [...state.tasks, action.payload] };
         case "EDIT_TASK":
             //Logique pour modifier une tâche ici
-            console.log(action.payload);
-            return { tasks: [...state.tasks] }
+
+            newTasks = state.tasks.map(task => {
+                if (task._id === action.payload._id) {
+                    return action.payload
+                }
+
+                return task;
+
+            })
+
+            return { tasks: newTasks }
         case "DELETE_TASK":
             //Logique pour supprimer une tâche ici
-            return { tasks: [...state.tasks] }
+            newTasks = state.tasks.map(task => {
+                if (task._id === action.payload._id) {
+                    //On met a jour la date d'achèvement de la tâche
+                    task.archivedAt = moment().toISOString();
+                    return task;
+                }
+
+                return task;
+
+            })
+
+            return { tasks: newTasks }
         default:
             return { ...state }
     }
