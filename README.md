@@ -312,12 +312,44 @@ const TasksDispatchContext = React.createContext();
 </Provider>
 ```
 
+### Résulat
 
+On peut donc maintenant venir enrober notre application avec nos Providers et faire passer nos contexts au travers de la hierarchie de composant. 
 
+```
+<TasksProvider>
+  <App />
+</TasksProvider>
+```
+
+On peut ensuite utiliser les données grâce à notre custom hook qui utilise useContext en interne
+
+```
+//Permet de récupérer l'état local qui représente la collection de tâche
+const tasks = useTasksState(); // => tasks[]
+```
 
 ### 2) Pour les données collectée par le formulaire
 
-Pour cet état local je vais simplement utiliser le hook useState qui permet d'intialiser un état local et de le mettre à jour.
+Pour cet état local je vais simplement utiliser le hook useState qui permet d'intialiser un état local et de le mettre à jour. Pour éviter de répéter la logique de mise à jour du state pour chaque input je vais utiliser un custom hook: 
+
+```
+function useInput(initialValue)  {
+  const [value, setValue] = useState(initialValue);
+
+  return {
+    value,
+    setValue,
+    reset: () => setValue(""),
+    bind: {
+      value,
+      onChange: event => {
+        setValue(event.target.value);
+      }
+    }
+  };
+};
+```
 
 
 

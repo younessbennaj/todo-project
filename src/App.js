@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './App.css';
 import { useTasksState, useTasksDispatch } from "./tasks-context";
 
@@ -87,24 +88,32 @@ const TaskDetails = ({ task }) => {
 */
 
 const TaskForm = ({ task }) => {
-  function handleChange() {
+  //Notre formulaire possède des données qui sont ammené à évoluer en fonction du temps (champs du formulaire)
+  //On va donc utiliser un état local pour gérer ça
+
+  function handleSubmit() {
 
   }
-  return (
 
+  //Pour éviter de répéter la logique de mise à jour du state pour chaque input je vais utiliser un custom hook.
+  const { value: title, bind: bindTitle, reset: resetTitle } = useInput(task ? task.title : "");
+  const { value: description, bind: bindDescription, reset: resetDescription } = useInput(task ? task.description : "");
+  const { value: body, bind: bindBody, reset: resetBody } = useInput(task ? task.body : "");
+
+  return (
     <div>
       <form action="">
         <div>
           <label htmlFor="title">Task title</label>
-          <input onChange={handleChange} value={task ? task.title : ""} type="text" name="title" id="title" />
+          <input {...bindTitle} type="text" name="title" id="title" />
         </div>
         <div>
           <label htmlFor="description">Task description</label>
-          <input onChange={handleChange} value={task ? task.description : ""} type="text" name="description" id="description" />
+          <input {...bindDescription} type="text" name="description" id="description" />
         </div>
         <div>
           <label htmlFor="body">Task body</label>
-          <input onChange={handleChange} value={task ? task.body : ""} type="text" name="body" id="body" />
+          <input {...bindBody} type="text" name="body" id="body" />
         </div>
         <input type="submit" value={task ? "Edit" : "Add"} />
       </form>
@@ -112,6 +121,23 @@ const TaskForm = ({ task }) => {
   )
 
 }
+
+//Pour éviter de répéter la logique de mise à jour du state pour chaque input je vais utiliser un custom hook.
+function useInput(initialValue) {
+  const [value, setValue] = useState(initialValue);
+
+  return {
+    value,
+    setValue,
+    reset: () => setValue(""),
+    bind: {
+      value,
+      onChange: event => {
+        setValue(event.target.value);
+      }
+    }
+  };
+};
 
 /*
 
