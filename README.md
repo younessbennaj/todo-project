@@ -353,6 +353,16 @@ function useInput(initialValue)  {
 
 J'utilise égalemnt un état local qui détermine si le formulaire est en mode ajout ou edit.
 
+# React Router et routes de l'application
+
+Voici les différentes routes de l'application 
+
+
+| Path | Description | Component |
+| ----- | ---- | ----------- |
+| / | Page est accessible lorsqu’on lance l’application | TasksList |
+| /task/:taskId | Accessible en cliquant sur le détail d’une todo : elle affiche tous les attributs d’un todo récupéré | TaskDetails |
+| /submit | accessible soit en cliquant sur Créer un todo sur la première page soit en cliquant sur modifier un todo | TaskForm |
 
 
 

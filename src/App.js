@@ -2,6 +2,14 @@ import React from 'react';
 import './App.css';
 import { useTasksState, useTasksDispatch } from "./tasks-context";
 
+//REACT ROUTER 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 //Import components here
 import TaskForm from "./components/TaskForm";
 
@@ -103,10 +111,23 @@ function App() {
 
   return (
     <Layout>
-      <TaskList tasks={tasks} />
-      <TaskDetails task={tasks[0]} />
-      <TaskForm task={tasks[0]} />
-      <TaskForm />
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <TaskList tasks={tasks} />
+          </Route>
+          <Route path="/task" exact>
+            <TaskDetails task={tasks[0]} />
+          </Route>
+          <Route path="/submit" exact>
+            <TaskForm task={tasks[0]} />
+          </Route>
+          {/* <Route path="/" exact>
+        <TaskForm />
+        </Route> */}
+
+        </Switch>
+      </Router>
     </Layout>
   );
 }
