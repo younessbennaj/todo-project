@@ -13,12 +13,12 @@ import {
 
 */
 
-const Task = ({ taskId, title }) => {
+const Task = ({ taskId, title, archivedAt }) => {
 
     const dispatch = useTasksDispatch();
 
     //J'ajoute un UI state pour désactiver le btn de modification si la tâche est achevée
-    const [isAchieved, setIsAchived] = useState(false);
+    const [isAchieved, setIsAchived] = useState(!!archivedAt);
 
     //Lorsque l'input de type checkbox est coché, on dispatch l'action de type DELETE_TASK
     //Coté reducteur on va attribuer une valeur à "achievedAt"
@@ -36,7 +36,7 @@ const Task = ({ taskId, title }) => {
         <li>
             <div className="task-item">
                 <div className="task-item__checkbox">
-                    <input type="checkbox" name="task" id={taskId} onChange={(e) => checkTask(e, taskId)} />
+                    <input checked={isAchieved} disabled={isAchieved} type="checkbox" name="task" id={taskId} onChange={(e) => checkTask(e, taskId)} />
                     <label htmlFor={taskId}>{title}</label>
                 </div>
                 <button className="btn btn-default"><Link to={`/task/${taskId}`} >details</Link></button>

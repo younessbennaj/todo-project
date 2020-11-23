@@ -15,7 +15,7 @@ const TaskList = ({ tasks }) => {
             <ul>
                 {tasks.map(task => {
                     return (
-                        <Task key={task._id} taskId={task._id} title={task.title} />
+                        <Task key={task._id} taskId={task._id} title={task.title} archivedAt={task.archivedAt} />
                     )
                 })}
             </ul>
