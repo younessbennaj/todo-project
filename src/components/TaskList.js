@@ -19,7 +19,7 @@ const TaskList = ({ tasks }) => {
                     )
                 })}
             </ul>
-            <button className="btn btn-blue"><Link to={`/submit`}>Create a task</Link></button>
+            <button className="task-list__btn btn btn-blue"><Link to={`/submit`}>Create a task</Link></button>
         </div>
     )
 }
