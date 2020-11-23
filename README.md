@@ -1,4 +1,40 @@
-#Todo App
+# Todo App 
+
+## Lancer l'application 
+
+```
+npm run start
+```
+
+## Description 
+
+L’application est une “todo list”. Un todo est composé d’un id, d’un titre (title), d’un corps de message (body), d’une date de création, d’une date de modification et d’une date de traitement.
+
+C'est une application type CRUD composée de 3 pages :
+
++ La première page est accessible lorsqu’on lance l’application : elle affiche une liste de todo. Sur chaque ligne de cette liste apparaît le titre du todo au bout : un bouton pour modifier le todo et un bouton pour voir le détail du todo. En dessous de cette liste il faut un bouton Créer un todo.
+
++ La deuxième page est accessible en cliquant sur le détail d’une todo : elle affiche tous les attributs d’un todo récupéré.
+
++ La troisième page accessible soit en cliquant sur Créer un todo sur la première page soit en cliquant sur modifier un todo, permet de modifier ou créer un todo supplémentaire.
+
+Lorsqu'une tâche est achevée, l'utilisateur peut cocher la case devant le titre de la tâche. Il n'est alors plus possible de la modifier. 
+
+## Résultat final
+
+### La page principale
+
+![page1](./assets/home.png)
+
+### La page des attributs de la tâche
+
+![page1](./assets/details.png)
+
+### La page d'ajout / edition de tâche
+
+![page1](./assets/form.png)
+
+## Justification des choix techniques
 
 # Découper l'interface en composants
 
@@ -362,7 +398,7 @@ Voici les différentes routes de l'application
 | ----- | ---- | ----------- |
 | / | Page est accessible lorsqu’on lance l’application | TasksList |
 | /task/:taskId | Accessible en cliquant sur le détail d’une todo : elle affiche tous les attributs d’un todo récupéré | TaskDetails |
-| /submit | accessible soit en cliquant sur Créer un todo sur la première page soit en cliquant sur modifier un todo | TaskForm |
+| /submit/:taskId | accessible soit en cliquant sur Créer un todo sur la première page soit en cliquant sur modifier un todo | TaskForm |
 
 
 
