@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useTasksDispatch } from "../tasks-context";
 
 //REACT ROUTER 
@@ -16,23 +17,31 @@ const Task = ({ taskId, title }) => {
 
     const dispatch = useTasksDispatch();
 
-    function handleDelete(id) {
+    //J'ajoute un UI state pour désactiver le btn de modification si la tâche est achevée
+    const [isAchieved, setIsAchived] = useState(false);
+
+    //Lorsque l'input de type checkbox est coché, on dispatch l'action de type DELETE_TASK
+    //Coté reducteur on va attribuer une valeur à "achievedAt"
+    function checkTask(e, id) {
+        console.log('checked');
         dispatch({ type: "DELETE_TASK", payload: { _id: id } })
-    }
-
-    function checkTask(e, taskId) {
-
+        //On désactive donc l'input une fois la tâche effectuée
+        e.target.disabled = true;
+        //On désactive le button de modification
+        setIsAchived(true);
     }
 
     return (
         // <li key={task.id}><input defaultChecked={task.isCompleted} type="checkbox" name="task" id="" onChange={(e) => checkTask(e, task.id)} /><label htmlFor="">{task.description}</label></li>
         <li>
             <div className="task-item">
-                <input type="checkbox" name="task" id="" onChange={(e) => checkTask(e, taskId)} />
-                <p>{title}</p>
-                <button><Link to={`/task/${taskId}`} >details</Link></button>
-                <button><Link to={`/submit/${taskId}`}>edit</Link></button>
-                <button onClick={() => handleDelete(taskId)}>delete</button>
+                <div className="task-item__checkbox">
+                    <input type="checkbox" name="task" id={taskId} onChange={(e) => checkTask(e, taskId)} />
+                    <label htmlFor={taskId}>{title}</label>
+                </div>
+                <button className="btn btn-default"><Link to={`/task/${taskId}`} >details</Link></button>
+                {!isAchieved && <button className="btn btn-default"><Link to={`/submit/${taskId}`}>edit</Link></button>}
+                {/* <button onClick={() => handleDelete(taskId)}>delete</button> */}
             </div>
         </li>
     )

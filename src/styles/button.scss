@@ -1,0 +1,55 @@
+.btn {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    border: none;
+    border-radius: 8px;
+
+    a {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        display: inline-block;
+        padding: 1em;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+
+    &-blue {
+        background-color: #2B6CB0;
+        a {
+            color: #fff;
+        }
+
+        &:hover {
+            background-color: #2C5282; 
+        }
+    }
+
+    &-default {
+        background-color: transparent;
+        border: 2px solid #4A5568;
+        a {
+            color: #4A5568;
+        }
+    }
+
+    &-green {
+        background-color: #38A169;
+
+        &:hover {
+            background-color: #2F855A; 
+        }
+    }
+
+    &-red {
+        background-color: #F56565;
+
+        &:hover {
+            background-color: #E53E3E; 
+        }
+    }
+}

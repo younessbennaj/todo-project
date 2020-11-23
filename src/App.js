@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.scss';
+import './styles/index.scss';
 import { useTasksState, useTasksDispatch } from "./tasks-context";
 
 //REACT ROUTER 
