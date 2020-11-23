@@ -87,22 +87,25 @@ const TaskForm = () => {
 
     return (
         <div className="form-container">
+            <h2 className="form-title">{task ? "Edit your task" : "Add a new task"}</h2>
             <form onSubmit={(e) => handleSubmit(e, task)} action="">
-                <div>
+                <div className="input-group">
                     <label htmlFor="title">Task title</label>
-                    <input className='input' {...bindTitle} type="text" name="title" id="title" />
+                    <input placeholder="Enter the title" {...bindTitle} type="text" name="title" id="title" />
                 </div>
-                <div>
+                <div className="input-group">
                     <label htmlFor="description">Task description</label>
-                    <input className='input' {...bindDescription} type="text" name="description" id="description" />
+                    <input placeholder="Enter a short description" {...bindDescription} type="text" name="description" id="description" />
                 </div>
-                <div>
+                <div className="input-group">
                     <label htmlFor="body">Task body</label>
-                    <input className='input' {...bindBody} type="text" name="body" id="body" />
+                    <textarea placeholder="Describe your task" {...bindBody} type="text" name="body" id="body" />
                 </div>
-                <input className="btn" type="submit" value={task ? "Edit" : "Add"} />
+                <input className="submit-btn" type="submit" value={task ? "Edit task" : "Add task"} />
             </form>
-            <Link to="/">Previous</Link>
+            <button className="inline-btn">
+                <Link to="/">Previous</Link>
+            </button>
         </div>
     )
 
