@@ -23,7 +23,6 @@ const Task = ({ taskId, title, archivedAt }) => {
     //Lorsque l'input de type checkbox est coché, on dispatch l'action de type DELETE_TASK
     //Coté reducteur on va attribuer une valeur à "achievedAt"
     function checkTask(e, id) {
-        console.log('checked');
         dispatch({ type: "DELETE_TASK", payload: { _id: id } })
         //On désactive donc l'input une fois la tâche effectuée
         e.target.disabled = true;
