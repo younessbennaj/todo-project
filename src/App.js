@@ -1,14 +1,12 @@
 import React from 'react';
-import './App.css';
-import { useTasksState, useTasksDispatch } from "./tasks-context";
+import './styles/index.scss';
+import { useTasksState } from "./tasks-context";
 
 //REACT ROUTER 
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
-  useParams
+  Route
 } from "react-router-dom";
 
 //Import components here
@@ -27,6 +25,7 @@ import TaskList from "./components/TaskList";
 const Layout = ({ children }) => {
   return (
     <div className="container">
+      <h1>#Todo list</h1>
       <div className="content">
         {children}
       </div>

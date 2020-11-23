@@ -1,0 +1,15 @@
+.task-list {
+
+    box-sizing: border-box;
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    &__btn {
+        display: block;
+        width: max-content;
+        margin: 0 auto;
+    }
+  } 

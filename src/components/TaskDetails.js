@@ -1,4 +1,5 @@
 import { useTasksState } from "../tasks-context";
+import moment from "moment";
 
 //REACT ROUTER 
 import {
@@ -19,15 +20,25 @@ const TaskDetails = () => {
         return task._id === taskId;
     });
 
+    function formatDate(str) {
+        let unix = Date.parse(str);
+        let date = moment(unix);
+        return date.format('lll');
+    }
+
     return (
-        <div>
-            <p>{task.title}</p>
-            <p>{task.details}</p>
-            <p>{task.body}</p>
-            <p>{task.createdAt}</p>
-            <p>{task.modfiedAt}</p>
-            <p>{task.archivedAt}</p>
-            <Link to="/">Previous</Link>
+        <div className="task-details">
+
+            <p className="task-details__title">{task.title}</p>
+            <p className="task-details__description">{task.description}</p>
+            <span className="task-details__label">Description</span>
+            <p className="task-details__body">{task.body}</p>
+            {task.createdAt && <p className="task-details__date"><u>created at:</u> {formatDate(task.createdAt)}</p>}
+            {task.modfiedAt && <p className="task-details__date"><u>modified at:</u> {formatDate(task.modfiedAt)}</p>}
+            {task.archivedAt && <p className="task-details__date"><u>achieved at:</u> {formatDate(task.archivedAt)}</p>}
+            <button className="inline-btn">
+                <Link to="/">Previous</Link>
+            </button>
         </div>
     )
 }

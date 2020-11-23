@@ -11,15 +11,15 @@ import Task from "./Task";
 */
 const TaskList = ({ tasks }) => {
     return (
-        <div>
+        <div className="task-list">
             <ul>
                 {tasks.map(task => {
                     return (
-                        <Task key={task._id} taskId={task._id} title={task.title} />
+                        <Task key={task._id} taskId={task._id} title={task.title} archivedAt={task.archivedAt} />
                     )
                 })}
             </ul>
-            <button><Link to={`/submit`}>Create a task</Link></button>
+            <button className="task-list__btn btn btn-blue"><Link to={`/submit`}>Create a task</Link></button>
         </div>
     )
 }
