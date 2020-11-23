@@ -12,9 +12,16 @@
         font-size: 14px;
         line-height: 17px;
         display: inline-block;
-        padding: 1em;
         text-decoration: none;
         cursor: pointer;
+
+        @include mobile-s {
+            padding: 0.5em;
+        }
+
+        @include tablet {
+            padding: 1em;
+        }
     }
     
 

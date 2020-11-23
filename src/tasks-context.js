@@ -71,11 +71,6 @@ const TasksDispatchContext = React.createContext(); //Renvoi un objet context
 
     */
 
-//Fonction pour retrouver une tâche dans la collection 
-function findTask(tasks, id) {
-    return tasks.find(task => task.id === id);
-}
-
 function reducer(state, action) {
     //On switch selon le type d'action dispatché
     // [...state.tasks] => évite la mutation de l'état local
@@ -84,7 +79,6 @@ function reducer(state, action) {
     switch (action.type) {
         case "ADD_TASK":
             //Logique pour ajouter une tâche ici
-            console.log(action.payload);
             return { tasks: [...state.tasks, action.payload] };
         case "EDIT_TASK":
             //Logique pour modifier une tâche ici
